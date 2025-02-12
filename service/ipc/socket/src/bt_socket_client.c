@@ -278,6 +278,7 @@ static void bt_socket_client_handle_event(uv_poll_t* poll, int status, int event
     }
 
     if (status != 0 || events & UV_DISCONNECT) {
+        uv_sem_post(&ins->message_processed);
         thread_loop_remove_poll(poll);
     } else if (events & UV_READABLE) {
         ret = bt_socket_client_receive(poll, fd, poll->data);
